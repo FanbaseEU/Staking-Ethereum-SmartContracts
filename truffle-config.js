@@ -46,7 +46,7 @@ module.exports = {
       skipDryRun: true
     },
     mainnet: {
-      provider : () => new HDWalletProvider(memonics, `https://kovan.infura.io/v3/${process.env.INFURA_KEY}`),
+      provider : () => new HDWalletProvider(memonics, `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`),
       networkCheckTimeout : 10000000,
       network_id : 1,
       confirmations: 2,
