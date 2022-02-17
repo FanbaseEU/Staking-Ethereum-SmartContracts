@@ -51,10 +51,10 @@ module.exports = {
       network_id : 1,
       confirmations: 2,
       timeoutBlocks: 200,
+      gas: 20000000,
       skipDryRun: true
     }
   },
-
   compilers: {
     solc: {
       version: "0.8.4",
