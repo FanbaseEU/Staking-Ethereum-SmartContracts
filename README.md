@@ -15,41 +15,28 @@ npm install
 ```
 
 
-## Test
-
-To run all unit tests
-```
-npm test
-```
-
-To run some subset of tests
-```
-npx truffle compile && npx mocha --exit --recursive --grep ERC20CompetitiveRewardModule
-```
-
-
 ## Deploy
 
 Copy `.env.template` to `.env` and `TREASURY_ADDRESS` variables.
 
 
-To deploy the factory contract to Kovan
+To deploy the factory contract to mainnet
 ```
-npx truffle migrate --network kovan --f 2 --to 2
+npx truffle migrate --network mainnet --f 2 --to 2
 ```
 
 Once the factory is deployed, define the `FACTORY_ADDRESS` variable in your `.env` file.
 
 
-To deploy the ERC20 staking module factory to Kovan
+To deploy the ERC20 staking module factory to mainnet
 ```
-npx truffle migrate --network kovan --f 3 --to 3
+npx truffle migrate --network mainnet --f 3 --to 3
 ```
 
 
-To deploy the ERC20 competitive reward module factory to Kovan
+To deploy the ERC20 competitive reward module factory to mainnet
 ```
-npx truffle migrate --network kovan --f 4 --to 4
+npx truffle migrate --network mainnet --f 4 --to 4
 ```
 
 Follow the remaining migration steps to deploy all contracts and libraries.
