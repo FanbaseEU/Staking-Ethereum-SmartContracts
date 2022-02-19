@@ -27,6 +27,7 @@ npx truffle migrate --network mainnet --f 2 --to 2
 
 Once the factory is deployed, define the `FACTORY_ADDRESS` variable in your `.env` file.
 
+And record block number of new deployed pool factory contract
 
 To deploy the ERC20 staking module factory to mainnet
 ```

@@ -47,11 +47,10 @@ module.exports = {
     },
     mainnet: {
       provider : () => new HDWalletProvider(memonics, `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`),
-      networkCheckTimeout : 10000000,
+      networkCheckTimeout : 100000000,
       network_id : 1,
       confirmations: 2,
       timeoutBlocks: 200,
-      gas: 20000000,
       skipDryRun: true
     }
   },
