@@ -25,7 +25,7 @@ contract ERC721StakingModule is IStakingModule {
 
     // members
     IERC721 private immutable _token;
-    address private immutable _factory;
+    address public immutable _factory;
 
     mapping(address => uint256) public counts;
     mapping(uint256 => address) public owners;
@@ -36,7 +36,7 @@ contract ERC721StakingModule is IStakingModule {
      * @param token_ the token that will be rewarded
      */
     constructor(address token_, address factory_) {
-        require(IERC165(token_).supportsInterface(0x80ac58cd), "smn1");
+        require(IERC165(token_).supportsInterface(0x80ac58cd), "Interface ID not matched");
         _token = IERC721(token_);
         _factory = factory_;
     }
@@ -70,9 +70,6 @@ contract ERC721StakingModule is IStakingModule {
     /**
      * @inheritdoc IStakingModule
      */
-    function factory() external view override returns (address) {
-        return _factory;
-    }
 
     /**
      * @inheritdoc IStakingModule
@@ -96,9 +93,9 @@ contract ERC721StakingModule is IStakingModule {
         bytes calldata data
     ) external override onlyOwner returns (address, uint256) {
         // validate
-        require(amount > 0, "smn2");
-        require(amount <= _token.balanceOf(user), "smn3");
-        require(data.length == 32 * amount, "smn4");
+        require(amount > 0, "Staking amount can't be zero");
+        require(amount <= _token.balanceOf(user), "Insufficient balance");
+        require(data.length == 32 * amount, "Invalid calldata");
 
         uint256 count = counts[user];
 
@@ -140,10 +137,10 @@ contract ERC721StakingModule is IStakingModule {
         bytes calldata data
     ) external override onlyOwner returns (address, uint256) {
         // validate
-        require(amount > 0, "smn5");
+        require(amount > 0, "Unstaking amount can't be zero");
         uint256 count = counts[user];
-        require(amount <= count, "smn6");
-        require(data.length == 32 * amount, "smn7");
+        require(amount <= count, "Insufficient staked balance");
+        require(data.length == 32 * amount, "Invalid calldata");
 
         // unstake
         for (uint256 i = 0; i < amount; i++) {
@@ -155,7 +152,7 @@ contract ERC721StakingModule is IStakingModule {
             }
 
             // ownership
-            require(owners[id] == user, "smn8");
+            require(owners[id] == user, "Only owner can unstake");
             delete owners[id];
 
             // clean up ownership mappings
@@ -195,8 +192,8 @@ contract ERC721StakingModule is IStakingModule {
         bytes calldata
     ) external override onlyOwner returns (address, uint256) {
         // validate
-        require(amount > 0, "smn9");
-        require(amount <= counts[user], "smn10");
+        require(amount > 0, "Claiming amount can't be zero");
+        require(amount <= counts[user], "Insufficient balance");
 
         uint256 shares = amount * SHARES_PER_TOKEN;
         emit Claimed(user, address(_token), amount, shares);

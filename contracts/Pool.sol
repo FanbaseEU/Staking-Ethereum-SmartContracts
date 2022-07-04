@@ -201,8 +201,8 @@ contract Pool is IPool, IEvents, ReentrancyGuard, OwnerController {
      */
     function withdraw(uint256 amount) external override {
         requireController();
-        require(amount > 0, "p1");
-        require(amount <= _gysrVested, "p2");
+        require(amount > 0, "Withdraw amount can't be zero");
+        require(amount <= _gysrVested, "Insufficient amount to withdraw");
 
         // do transfer
         _gysr.safeTransfer(msg.sender, amount);

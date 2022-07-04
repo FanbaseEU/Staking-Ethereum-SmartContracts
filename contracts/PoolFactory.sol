@@ -81,8 +81,8 @@ contract PoolFactory is IPoolFactory, OwnerController {
         bytes calldata rewarddata
     ) external returns (address) {
         // validate
-        require(whitelist[staking] == ModuleFactoryType.Staking, "f1");
-        require(whitelist[reward] == ModuleFactoryType.Reward, "f2");
+        require(whitelist[staking] == ModuleFactoryType.Staking, "Not found in whitelist of staking module");
+        require(whitelist[reward] == ModuleFactoryType.Reward, "Not found in whitelist of reward module");
 
         // create modules
         address stakingModule =
@@ -137,7 +137,7 @@ contract PoolFactory is IPoolFactory, OwnerController {
      */
     function setFee(uint256 fee_) external {
         requireController();
-        require(fee_ <= MAX_FEE, "f3");
+        require(fee_ <= MAX_FEE, "Fee can't be set as exceed Max value");
         emit FeeUpdated(_fee, fee_);
         _fee = fee_;
     }
@@ -149,8 +149,8 @@ contract PoolFactory is IPoolFactory, OwnerController {
      */
     function setWhitelist(address factory_, uint256 type_) external {
         requireController();
-        require(type_ <= uint256(ModuleFactoryType.Reward), "f4");
-        require(factory_ != address(0), "f5");
+        require(type_ <= uint256(ModuleFactoryType.Reward), "Module Type Error!");
+        require(factory_ != address(0), "Factory address can't be zero");
         emit WhitelistUpdated(factory_, uint256(whitelist[factory_]), type_);
         whitelist[factory_] = ModuleFactoryType(type_);
     }

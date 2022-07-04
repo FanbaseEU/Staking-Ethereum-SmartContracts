@@ -30,7 +30,7 @@ contract ERC721StakingModuleFactory is IModuleFactory {
         returns (address)
     {
         // validate
-        require(data.length == 32, "smnf1");
+        require(data.length == 32, "Invalid calldata");
 
         // parse staking token
         address token;
