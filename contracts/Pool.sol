@@ -34,7 +34,7 @@ contract Pool is IPool, IEvents, ReentrancyGuard, OwnerController {
 
     // modules
     IStakingModule private immutable _staking;
-    IRewardModule public immutable _reward;
+    IRewardModule private immutable _reward;
 
     // gysr fields
     IERC20 private immutable _gysr;

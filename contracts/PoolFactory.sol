@@ -63,9 +63,6 @@ contract PoolFactory is IPoolFactory, OwnerController {
         _fee = MAX_FEE;
     }
 
-    // function getTemp() external view returns(address){
-    //     return temp;
-    // }
     /**
      * @notice create a new Pool
      * @param staking address of factory that will be used to create staking module
