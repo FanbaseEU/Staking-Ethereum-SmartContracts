@@ -41,6 +41,9 @@ contract Pool is IPool, IEvents, ReentrancyGuard, OwnerController {
     IPoolFactory private immutable _factory;
     uint256 private _gysrVested;
 
+    //anti flash loan
+    uint256 private _updated;
+
     /**
      * @param staking_ the staking module address
      * @param reward_ the reward module address
@@ -140,6 +143,8 @@ contract Pool is IPool, IEvents, ReentrancyGuard, OwnerController {
         (uint256 spent, uint256 vested) =
             _reward.stake(account, msg.sender, shares, rewarddata);
         _processGysr(spent, vested);
+
+        _updated = block.timestamp;
     }
 
     /**
@@ -150,6 +155,8 @@ contract Pool is IPool, IEvents, ReentrancyGuard, OwnerController {
         bytes calldata stakingdata,
         bytes calldata rewarddata
     ) external override nonReentrant {
+        require(_updated > block.timestamp, "Unstaking can't be done in same block with staking");
+
         (address account, uint256 shares) =
             _staking.unstake(msg.sender, amount, stakingdata);
         (uint256 spent, uint256 vested) =
@@ -201,7 +208,7 @@ contract Pool is IPool, IEvents, ReentrancyGuard, OwnerController {
      */
     function withdraw(uint256 amount) external override {
         requireController();
-        require(amount > 0, "Withdraw amount can't be zero");
+        require(amount > 0, "Withdraw amount must be greater than 0");
         require(amount <= _gysrVested, "Insufficient amount to withdraw");
 
         // do transfer

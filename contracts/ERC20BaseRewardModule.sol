@@ -128,7 +128,7 @@ abstract contract ERC20BaseRewardModule is IRewardModule {
     ) internal {
         requireController();
         // validate
-        require(amount > 0, "rm1");
+        require(amount > 0, "Funding amount must be greater than 0");
         require(start >= block.timestamp, "rm2");
         require(_fundings[token].length < MAX_ACTIVE_FUNDINGS, "rm3");
 

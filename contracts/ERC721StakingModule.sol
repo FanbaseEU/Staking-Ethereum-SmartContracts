@@ -93,7 +93,7 @@ contract ERC721StakingModule is IStakingModule {
         bytes calldata data
     ) external override onlyOwner returns (address, uint256) {
         // validate
-        require(amount > 0, "Staking amount can't be zero");
+        require(amount > 0, "Staking amount must be greater than 0");
         require(amount <= _token.balanceOf(user), "Insufficient balance");
         require(data.length == 32 * amount, "Invalid calldata");
 
@@ -137,7 +137,7 @@ contract ERC721StakingModule is IStakingModule {
         bytes calldata data
     ) external override onlyOwner returns (address, uint256) {
         // validate
-        require(amount > 0, "Unstaking amount can't be zero");
+        require(amount > 0, "Unstaking amount must be greater than 0");
         uint256 count = counts[user];
         require(amount <= count, "Insufficient staked balance");
         require(data.length == 32 * amount, "Invalid calldata");
@@ -192,7 +192,7 @@ contract ERC721StakingModule is IStakingModule {
         bytes calldata
     ) external override onlyOwner returns (address, uint256) {
         // validate
-        require(amount > 0, "Claiming amount can't be zero");
+        require(amount > 0, "Claiming amount must be greater than 0");
         require(amount <= counts[user], "Insufficient balance");
 
         uint256 shares = amount * SHARES_PER_TOKEN;
