@@ -40,7 +40,11 @@ contract PoolFactory is IPoolFactory, OwnerController {
     );
 
     // types
-    enum ModuleFactoryType {Unknown, Staking, Reward}
+    enum ModuleFactoryType {
+        Unknown,
+        Staking,
+        Reward
+    }
 
     // constants
     uint256 public constant MAX_FEE = 20 * 10**16; // 20%
@@ -53,10 +57,20 @@ contract PoolFactory is IPoolFactory, OwnerController {
     uint256 private _fee;
     mapping(address => ModuleFactoryType) public whitelist;
 
-    
+    // time lock
+    uint256 private constant _TIMELOCK = 2 days;
+    uint256 public timelock;
     /**
      * @param gysr_ address of GYSR token
      */
+    //time lock
+    modifier notLocked() {
+        require(
+            timelock != 0 && timelock <= block.timestamp,
+            "Function is timelocked"
+        );
+        _;
+    }
     constructor(address gysr_, address treasury_) {
         _gysr = gysr_;
         _treasury = treasury_;
@@ -78,17 +92,24 @@ contract PoolFactory is IPoolFactory, OwnerController {
         bytes calldata rewarddata
     ) external returns (address) {
         // validate
-        require(whitelist[staking] == ModuleFactoryType.Staking, "Not found in whitelist of staking module");
-        require(whitelist[reward] == ModuleFactoryType.Reward, "Not found in whitelist of reward module");
+        require(
+            whitelist[staking] == ModuleFactoryType.Staking,
+            "Not found in whitelist of staking module"
+        );
+        require(
+            whitelist[reward] == ModuleFactoryType.Reward,
+            "Not found in whitelist of reward module"
+        );
 
         // create modules
-        address stakingModule =
-            IModuleFactory(staking).createModule(stakingdata);
+        address stakingModule = IModuleFactory(staking).createModule(
+            stakingdata
+        );
         address rewardModule = IModuleFactory(reward).createModule(rewarddata);
-        
+
         // create pool
         Pool pool = new Pool(stakingModule, rewardModule, _gysr, address(this));
-        
+
         // set access
         IStakingModule(stakingModule).transferOwnership(address(pool));
         IRewardModule(rewardModule).transferOwnership(address(pool));
@@ -102,6 +123,18 @@ contract PoolFactory is IPoolFactory, OwnerController {
         // output
         emit PoolCreated(msg.sender, address(pool));
         return address(pool);
+    }
+
+    
+
+    //unlock timelock
+    function unlockFunction() public onlyOwner {
+        timelock = block.timestamp + _TIMELOCK;
+    }
+
+    //lock timelock
+    function lockFunction() public onlyOwner {
+        timelock = 0;
     }
 
     /**
@@ -122,7 +155,7 @@ contract PoolFactory is IPoolFactory, OwnerController {
      * @notice update the GYSR treasury address
      * @param treasury_ new value for treasury address
      */
-    function setTreasury(address treasury_) external {
+    function setTreasury(address treasury_) external notLocked{
         requireController();
         emit TreasuryUpdated(_treasury, treasury_);
         _treasury = treasury_;
@@ -132,7 +165,7 @@ contract PoolFactory is IPoolFactory, OwnerController {
      * @notice update the global GYSR spending fee
      * @param fee_ new value for GYSR spending fee
      */
-    function setFee(uint256 fee_) external {
+    function setFee(uint256 fee_) external notLocked{
         requireController();
         require(fee_ <= MAX_FEE, "Fee can't be set as exceed Max value");
         emit FeeUpdated(_fee, fee_);
@@ -144,9 +177,12 @@ contract PoolFactory is IPoolFactory, OwnerController {
      * @param factory_ address of module factory
      * @param type_ updated whitelist status for module
      */
-    function setWhitelist(address factory_, uint256 type_) external {
+    function setWhitelist(address factory_, uint256 type_) external notLocked{
         requireController();
-        require(type_ <= uint256(ModuleFactoryType.Reward), "Module Type Error!");
+        require(
+            type_ <= uint256(ModuleFactoryType.Reward),
+            "Module Type Error!"
+        );
         require(factory_ != address(0), "Factory address can't be zero");
         emit WhitelistUpdated(factory_, uint256(whitelist[factory_]), type_);
         whitelist[factory_] = ModuleFactoryType(type_);
