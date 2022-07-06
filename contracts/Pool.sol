@@ -42,7 +42,7 @@ contract Pool is IPool, IEvents, ReentrancyGuard, OwnerController {
     uint256 private _gysrVested;
 
     //anti flash loan
-    uint256 private _updated;
+    mapping(address => uint256) public _updated;
 
     /**
      * @param staking_ the staking module address
@@ -144,7 +144,7 @@ contract Pool is IPool, IEvents, ReentrancyGuard, OwnerController {
             _reward.stake(account, msg.sender, shares, rewarddata);
         _processGysr(spent, vested);
 
-        _updated = block.timestamp;
+        _updated[msg.sender] = block.timestamp;
     }
 
     /**
@@ -155,7 +155,7 @@ contract Pool is IPool, IEvents, ReentrancyGuard, OwnerController {
         bytes calldata stakingdata,
         bytes calldata rewarddata
     ) external override nonReentrant {
-        require(_updated > block.timestamp, "Unstaking can't be done in same block with staking");
+        require(_updated[msg.sender] > block.timestamp, "Unstaking can't be done in same block with staking");
 
         (address account, uint256 shares) =
             _staking.unstake(msg.sender, amount, stakingdata);

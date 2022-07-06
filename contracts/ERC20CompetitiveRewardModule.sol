@@ -64,7 +64,7 @@ contract ERC20CompetitiveRewardModule is ERC20BaseRewardModule {
         uint256 bonusPeriod_,
         address factory_
     ) {
-        require(bonusMin_ <= bonusMax_, "crm1");
+        require(bonusMin_ <= bonusMax_, "Bonus value setting error");
 
         _token = IERC20(token_);
         _factory = factory_;
@@ -285,7 +285,7 @@ contract ERC20CompetitiveRewardModule is ERC20BaseRewardModule {
     ) private returns (uint256 spent, uint256 vested) {
         // validate
         // note: we assume shares has been validated upstream
-        require(data.length == 0 || data.length == 32, "crm2");
+        require(data.length == 0 || data.length == 32, "Invalid calldata");
 
         // parse GYSR amount from data
         if (data.length == 32) {

@@ -62,7 +62,7 @@ contract OwnerController {
      * @dev Modifier that throws if called by any account other than the owner.
      */
     modifier onlyOwner() {
-        require(_owner == msg.sender, "oc1");
+        require(_owner == msg.sender, "Only owner can perform this action");
         _;
     }
 
@@ -70,7 +70,7 @@ contract OwnerController {
      * @dev Modifier that throws if called by any account other than the controller.
      */
     modifier onlyController() {
-        require(_controller == msg.sender, "oc2");
+        require(_controller == msg.sender, "Only controller can perform this action");
         _;
     }
 
@@ -78,14 +78,14 @@ contract OwnerController {
      * @dev Throws if called by any account other than the owner.
      */
     function requireOwner() internal view {
-        require(_owner == msg.sender, "oc1");
+        require(_owner == msg.sender, "Only owner can perform this action");
     }
 
     /**
      * @dev Throws if called by any account other than the controller.
      */
     function requireController() internal view {
-        require(_controller == msg.sender, "oc2");
+        require(_controller == msg.sender, "Only controller can perform this action");
     }
 
     /**
@@ -95,7 +95,7 @@ contract OwnerController {
      */
     function transferOwnership(address newOwner) public virtual {
         requireOwner();
-        require(newOwner != address(0), "oc3");
+        require(newOwner != address(0), "New owner address can't be zero");
         emit OwnershipTransferred(_owner, newOwner);
         _owner = newOwner;
     }
@@ -106,7 +106,7 @@ contract OwnerController {
      */
     function transferControl(address newController) public virtual {
         requireOwner();
-        require(newController != address(0), "oc4");
+        require(newController != address(0), "New controller address can't be zero");
         emit ControlTransferred(_controller, newController);
         _controller = newController;
     }

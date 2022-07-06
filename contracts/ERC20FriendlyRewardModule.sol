@@ -73,7 +73,7 @@ contract ERC20FriendlyRewardModule is ERC20BaseRewardModule {
         uint256 vestingPeriod_,
         address factory_
     ) {
-        require(vestingStart_ <= FULL_VESTING, "frm1");
+        require(vestingStart_ <= FULL_VESTING, "Invalid vesting start value");
 
         _token = IERC20(token_);
         _factory = factory_;
@@ -152,7 +152,7 @@ contract ERC20FriendlyRewardModule is ERC20BaseRewardModule {
         uint256 shares,
         bytes calldata data
     ) internal returns (uint256, uint256) {
-        require(data.length == 0 || data.length == 32, "frm2");
+        require(data.length == 0 || data.length == 32, "Invalid calldata");
 
         uint256 gysr;
         if (data.length == 32) {

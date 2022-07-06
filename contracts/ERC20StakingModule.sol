@@ -96,7 +96,7 @@ contract ERC20StakingModule is IStakingModule {
         bytes calldata
     ) external override onlyOwner returns (address, uint256) {
         // validate
-        require(amount > 0, "sm1");
+        require(amount > 0, "Staking amount must greater than 0");
 
         // transfer
         uint256 total = _token.balanceOf(address(this));
@@ -108,7 +108,7 @@ contract ERC20StakingModule is IStakingModule {
             (totalShares > 0)
                 ? (totalShares * actual) / total
                 : actual * INITIAL_SHARES_PER_TOKEN;
-        require(minted > 0, "sm2");
+        require(minted > 0, "User share must greater than 0");
 
         // update user staking info
         shares[user] += minted;
@@ -190,13 +190,13 @@ contract ERC20StakingModule is IStakingModule {
         returns (uint256 shares_)
     {
         // validate
-        require(amount > 0, "sm3");
-        require(totalShares > 0, "sm4");
+        require(amount > 0, "Unstaking amount must greater than 0");
+        require(totalShares > 0, "Insufficient shares in this pool");
 
         // convert token amount to shares
         shares_ = (totalShares * amount) / _token.balanceOf(address(this));
 
-        require(shares_ > 0, "sm5");
-        require(shares[user] >= shares_, "sm6");
+        require(shares_ > 0, "Shares must greater than 0");
+        require(shares[user] >= shares_, "User shares exceeds total shares");
     }
 }

@@ -30,7 +30,7 @@ contract ERC20FriendlyRewardModuleFactory is IModuleFactory {
         returns (address)
     {
         // validate
-        require(data.length == 96, "frmf1");
+        require(data.length == 96, "Invalid calldata");
 
         // parse constructor arguments
         address token;
