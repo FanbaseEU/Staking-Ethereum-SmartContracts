@@ -155,7 +155,7 @@ contract Pool is IPool, IEvents, ReentrancyGuard, OwnerController {
         bytes calldata stakingdata,
         bytes calldata rewarddata
     ) external override nonReentrant {
-        require(_updated[msg.sender] > block.timestamp, "Unstaking can't be done in same block with staking");
+        require(_updated[msg.sender] < block.timestamp, "Unstaking can't be done in same block with staking");
 
         (address account, uint256 shares) =
             _staking.unstake(msg.sender, amount, stakingdata);
