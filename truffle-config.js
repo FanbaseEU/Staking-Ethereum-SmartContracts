@@ -10,7 +10,7 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 const memonics = process.env.MNEMONIC_PHRASE.trim()
 const provider = new HDWalletProvider({
   mnemonic: memonics,
-  providerOrUrl: `https://eth-ropsten.alchemyapi.io/v2/jECr1ILHQDrvYynMCvJGGnlx6TupG8aF`,
+  providerOrUrl: `https://eth-ropsten.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
   addressIndex: 1
 });
 
