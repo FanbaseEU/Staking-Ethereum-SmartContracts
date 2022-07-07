@@ -1,7 +1,7 @@
 // deploy GYSR token
 
-const GeyserToken = artifacts.require('GeyserToken');
+const BurnableERC20 = artifacts.require('BurnableERC20');
 
 module.exports = function (deployer) {
-    deployer.deploy(GeyserToken);
+    deployer.deploy(BurnableERC20);
 }

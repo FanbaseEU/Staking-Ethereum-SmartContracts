@@ -60,9 +60,7 @@ contract PoolFactory is IPoolFactory, OwnerController {
     // time lock
     uint256 private constant _TIMELOCK = 2 days;
     uint256 public timelock;
-    /**
-     * @param gysr_ address of GYSR token
-     */
+    
     //time lock
     modifier notLocked() {
         require(
@@ -71,6 +69,9 @@ contract PoolFactory is IPoolFactory, OwnerController {
         );
         _;
     }
+    /**
+     * @param gysr_ address of GYSR token
+     */
     constructor(address gysr_, address treasury_) {
         _gysr = gysr_;
         _treasury = treasury_;

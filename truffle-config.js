@@ -8,6 +8,11 @@ const LedgerWalletProvider = require('@umaprotocol/truffle-ledger-provider');
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 const memonics = process.env.MNEMONIC_PHRASE.trim()
+const provider = new HDWalletProvider({
+  mnemonic: memonics,
+  providerOrUrl: `https://eth-ropsten.alchemyapi.io/v2/jECr1ILHQDrvYynMCvJGGnlx6TupG8aF`,
+  addressIndex: 1
+});
 
 module.exports = {
   networks: {
@@ -19,7 +24,7 @@ module.exports = {
       
     },
 
-    ropsten: {
+    ropsten1: {
       provider: new LedgerWalletProvider(
         {
           networkId: 3,
@@ -44,6 +49,11 @@ module.exports = {
       confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true
+    },
+    ropsten2: {
+      provider : provider,
+      networkCheckTimeout : 10000000,
+      network_id : 3,
     },
     mainnet: {
       provider : () => new HDWalletProvider(memonics, `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`),
