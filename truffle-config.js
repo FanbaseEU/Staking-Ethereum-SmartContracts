@@ -50,6 +50,14 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true
     },
+    goerli: {
+      provider : () => new HDWalletProvider(memonics, `https://goerli.infura.io/v3/${process.env.INFURA_KEY}`),
+      networkCheckTimeout : 10000000,
+      network_id : 5,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
     ropsten2: {
       provider : provider,
       networkCheckTimeout : 10000000,
