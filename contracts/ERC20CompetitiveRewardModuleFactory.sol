@@ -1,7 +1,7 @@
 /*
 ERC20CompetitiveRewardModuleFactory
 
-https://github.com/gysr-io/core
+https://github.com/FanbaseEU/Staking_Ethereum_SmartContracts
 
 SPDX-License-Identifier: MIT
 */
