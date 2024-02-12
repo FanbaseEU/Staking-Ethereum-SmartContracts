@@ -1,8 +1,8 @@
 ## Fanbase Foundation Smart Contract for Staking
 
-## Language: Solidity
+### Language: Solidity
 
-## Purpose: Staking
+### Purpose: Staking
 This repository includes the ERC20 and ERC721 token standards.
 
 See how Fanbase Labs puts our open-source protocol to use at https://www.defi.fanbase.io ...
