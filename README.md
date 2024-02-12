@@ -5,7 +5,7 @@
 ### Purpose: Staking
 This repository includes the ERC20 and ERC721 token standards.
 
-See how Fanbase Labs puts our open-source protocol to use at https://defi.fanbase.io ...
+See how Fanbase Labs puts our open-source protocol to use at https://defi.fanbase.io/stake ...
 
 
 ## Setup
