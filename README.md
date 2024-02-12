@@ -1,4 +1,4 @@
-## Fanbase Foundation Smart Contract for Staking
+## Fanbase Foundation Smart Contract for EVM Staking
 
 ### Language: Solidity
 
